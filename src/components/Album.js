@@ -75,6 +75,18 @@ class Album extends Component {
     this.play(newIndex);
   }
 
+  handleNextClick() {
+    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    //reset last songNumCell to number
+    const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
+    lastSongNumCell.innerText = this.state.currentIndex+1;
+    //play prev song, reset current index
+    const newIndex = Math.min(this.state.album.songs.length-1, currentIndex+1);
+    const newSong = this.state.album.songs[newIndex];
+    this.setSong(newSong, newIndex);
+    this.play(newIndex);
+  }
+
   handleMouseEnter(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (!isSameSong || !this.state.isPlaying) {
@@ -90,7 +102,8 @@ class Album extends Component {
   handleMouseLeave(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (!isSameSong || !this.state.wasPlaying) {
-      //change numCell to number. Won't execute on the first song on open even though it is the "current song".
+      //change numCell to number
+      //Won't change first song to play icon on open even though it is the "current song"
       const songNumCell = document.getElementById('songNumCell ' + index);
       songNumCell.innerText = index+1;
       }
@@ -134,6 +147,7 @@ class Album extends Component {
             currentSong= {this.state.currentSong}
             handleSongClick={() => this.handleSongClick(this.state.currentSong, this.state.currentIndex)}
             handlePrevClick={() => this.handlePrevClick()}
+            handleNextClick={() => this.handleNextClick()}
           />
         </section>
       </section>
