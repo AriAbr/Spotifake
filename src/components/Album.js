@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import albumData from './../data/albums';
+import PlayerBar from './PlayerBar';
 
 class Album extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Album extends Component {
       album: album,
       currentSong: album.songs[0],
       currentIndex: 0,
-      isPlaying: false
+      isPlaying: false,
+      wasPlaying: false
     };
 
     this.audioElement = document.createElement('audio');
@@ -20,7 +22,7 @@ class Album extends Component {
 
   play() {
     this.audioElement.play();
-    this.setState({ isPlaying:true });
+    this.setState({ isPlaying:true, wasPlaying: true });
   }
 
   pause() {
@@ -75,11 +77,11 @@ class Album extends Component {
 
   handleMouseLeave(song, index) {
     const isSameSong = this.state.currentSong === song;
-    if (!isSameSong || !this.state.isPlaying) {
+    if (!isSameSong || !this.state.wasPlaying) {
       //change numCell to number
       const songNumCell = document.getElementById('songNumCell ' + index);
       songNumCell.innerText = index+1;
-    }
+      }
   }
 
   render() {
@@ -115,6 +117,7 @@ class Album extends Component {
               { songs }
             </tbody>
           </table>
+          <PlayerBar />
         </section>
       </section>
     );
