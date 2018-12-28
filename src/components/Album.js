@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import albumData from './../data/albums';
+import PlayerBar from './PlayerBar';
 
 class Album extends Component {
   constructor(props) {
@@ -11,21 +12,34 @@ class Album extends Component {
       album: album,
       currentSong: album.songs[0],
       currentIndex: 0,
-      isPlaying: false
+      isPlaying: false,
+      wasPlaying: false
     };
 
     this.audioElement = document.createElement('audio');
     this.audioElement.src = album.songs[0].audioSrc;
   }
 
-  play() {
+  play(index) {
     this.audioElement.play();
-    this.setState({ isPlaying:true });
+    this.setState({ isPlaying:true, wasPlaying: true });
+    //change numCell to pause icon
+    const newSongNumCell = document.getElementById('songNumCell ' + index);
+    const spanElem = document.createElement('span');
+    spanElem.className = "ion-pause";
+    newSongNumCell.innerText = '';
+    newSongNumCell.prepend(spanElem)
   }
 
-  pause() {
+  pause(index) {
     this.audioElement.pause();
     this.setState({ isPlaying: false });
+    //change numCell to play icon
+    const newSongNumCell = document.getElementById('songNumCell ' + index);
+    const spanElem = document.createElement('span');
+    spanElem.className = "ion-play";
+    newSongNumCell.innerText = '';
+    newSongNumCell.prepend(spanElem)
   }
 
   setSong(song, index) {
@@ -36,13 +50,7 @@ class Album extends Component {
   handleSongClick(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (this.state.isPlaying && isSameSong) {
-      this.pause();
-      //change numCell to play icon
-      const newSongNumCell = document.getElementById('songNumCell ' + index);
-      const spanElem = document.createElement('span');
-      spanElem.className = "ion-play";
-      newSongNumCell.innerText = '';
-      newSongNumCell.prepend(spanElem)
+      this.pause(index);
     } else {
       if (!isSameSong) {
         //reset last songNumCell to number
@@ -51,14 +59,20 @@ class Album extends Component {
         //setState to new song
         this.setSong(song, index) }
       //play new song
-      this.play();
-      //change numCell to pause icon
-      const newSongNumCell = document.getElementById('songNumCell ' + index);
-      const spanElem = document.createElement('span');
-      spanElem.className = "ion-pause";
-      newSongNumCell.innerText = '';
-      newSongNumCell.prepend(spanElem)
+      this.play(index);
     }
+  }
+
+  handlePrevClick() {
+    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    //reset last songNumCell to number
+    const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
+    lastSongNumCell.innerText = this.state.currentIndex+1;
+    //play prev saong, reset current index
+    const newIndex = Math.max(0, currentIndex-1);
+    const newSong = this.state.album.songs[newIndex];
+    this.setSong(newSong, newIndex);
+    this.play(newIndex);
   }
 
   handleMouseEnter(song, index) {
@@ -75,8 +89,8 @@ class Album extends Component {
 
   handleMouseLeave(song, index) {
     const isSameSong = this.state.currentSong === song;
-    if (!isSameSong || !this.state.isPlaying) {
-      //change numCell to number
+    if (!isSameSong || !this.state.wasPlaying) {
+      //change numCell to number. Won't execute on the first song on open even though it is the "current song".
       const songNumCell = document.getElementById('songNumCell ' + index);
       songNumCell.innerText = index+1;
     }
@@ -115,6 +129,12 @@ class Album extends Component {
               { songs }
             </tbody>
           </table>
+          <PlayerBar
+            isPlaying={this.state.isPlaying}
+            currentSong= {this.state.currentSong}
+            handleSongClick={() => this.handleSongClick(this.state.currentSong, this.state.currentIndex)}
+            handlePrevClick={() => this.handlePrevClick()}
+          />
         </section>
       </section>
     );
