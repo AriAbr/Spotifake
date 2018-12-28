@@ -10,6 +10,7 @@ class Album extends Component {
     this.state = {
       album: album,
       currentSong: album.songs[0],
+      currentIndex: 0,
       isPlaying: false
     };
 
@@ -27,25 +28,70 @@ class Album extends Component {
     this.setState({ isPlaying: false });
   }
 
-  setSong(song) {
+  setSong(song, index) {
     this.audioElement.src = song.audioSrc;
-    this.setState({ currentSong: song });
+    this.setState({ currentSong: song, currentIndex: index });
   }
 
-  handleSongClick(song) {
+  handleSongClick(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (this.state.isPlaying && isSameSong) {
       this.pause();
+      //change numCell to play icon
+      const newSongNumCell = document.getElementById('songNumCell ' + index);
+      const spanElem = document.createElement('span');
+      spanElem.className = "ion-play";
+      newSongNumCell.innerText = '';
+      newSongNumCell.prepend(spanElem)
     } else {
-      if (!isSameSong) { this.setSong(song); }
+      if (!isSameSong) {
+        //reset last songNumCell to number
+        const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
+        lastSongNumCell.innerText = this.state.currentIndex+1;
+        //setState to new song
+        this.setSong(song, index) }
+      //play new song
       this.play();
+      //change numCell to pause icon
+      const newSongNumCell = document.getElementById('songNumCell ' + index);
+      const spanElem = document.createElement('span');
+      spanElem.className = "ion-pause";
+      newSongNumCell.innerText = '';
+      newSongNumCell.prepend(spanElem)
+    }
+  }
+
+  handleMouseEnter(song, index) {
+    const isSameSong = this.state.currentSong === song;
+    if (!isSameSong || !this.state.isPlaying) {
+      //change numCell to play icon
+      const songNumCell = document.getElementById('songNumCell ' + index);
+      const spanElem = document.createElement('span')
+      spanElem.className = "ion-play"
+      songNumCell.innerText = '';
+      songNumCell.prepend(spanElem)
+    }
+  }
+
+  handleMouseLeave(song, index) {
+    const isSameSong = this.state.currentSong === song;
+    if (!isSameSong || !this.state.isPlaying) {
+      //change numCell to number
+      const songNumCell = document.getElementById('songNumCell ' + index);
+      songNumCell.innerText = index+1;
     }
   }
 
   render() {
     const songs = this.state.album.songs.map( (song, index) =>
-      <tr className="song" key={index} onClick={() => this.handleSongClick(song)} >
-        <td>{index+1}</td>
+      <tr
+        className="song"
+        key={index}
+        onClick={() => this.handleSongClick(song, index)}
+        onMouseEnter={() => this.handleMouseEnter(song, index)}
+        onMouseLeave={() => this.handleMouseLeave(song, index)}
+      >
+        <td id={'songNumCell ' + index}>{index+1}</td>
         <td>{song.title}</td>
         <td>{song.duration}</td>
       </tr>
