@@ -10,8 +10,10 @@ class Album extends Component {
     });
     this.state = {
       album: album,
-      currentSong: album.songs[0],
       currentIndex: 0,
+      currentSong: album.songs[0],
+      currentTime: 0,
+      duration: album.songs[0].duration,
       isPlaying: false,
       wasPlaying: false
     };
@@ -20,26 +22,47 @@ class Album extends Component {
     this.audioElement.src = album.songs[0].audioSrc;
   }
 
+  componentDidMount() {
+    this.eventListeners = {
+      timeupdate: e => {
+        this.setState({ currentTime: this.audioElement.currentTime });
+      },
+      durationchange: e => {
+        this.setState({ duration: this.audioElement.duration });
+      }
+    };
+    this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
+    this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+  }
+
+  componentWillUnmount() {
+    this.audioElement.src = null;
+    this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
+    this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
+  }
+
+  updateSongNumCell(songIndex, icon) {
+    const songNumCell = document.getElementById('songNumCell ' + songIndex);
+    if (!icon) {
+      songNumCell.innerText = songIndex+1;
+    } else {
+      const spanElem = document.createElement('span');
+      spanElem.className = `ion-${icon}`;
+      songNumCell.innerText = '';
+      songNumCell.prepend(spanElem);
+    }
+  }
+
   play(index) {
     this.audioElement.play();
     this.setState({ isPlaying:true, wasPlaying: true });
-    //change numCell to pause icon
-    const newSongNumCell = document.getElementById('songNumCell ' + index);
-    const spanElem = document.createElement('span');
-    spanElem.className = "ion-pause";
-    newSongNumCell.innerText = '';
-    newSongNumCell.prepend(spanElem)
+    this.updateSongNumCell(index, "pause");
   }
 
   pause(index) {
     this.audioElement.pause();
     this.setState({ isPlaying: false });
-    //change numCell to play icon
-    const newSongNumCell = document.getElementById('songNumCell ' + index);
-    const spanElem = document.createElement('span');
-    spanElem.className = "ion-play";
-    newSongNumCell.innerText = '';
-    newSongNumCell.prepend(spanElem)
+    this.updateSongNumCell(index, "play");
   }
 
   setSong(song, index) {
@@ -53,9 +76,7 @@ class Album extends Component {
       this.pause(index);
     } else {
       if (!isSameSong) {
-        //reset last songNumCell to number
-        const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
-        lastSongNumCell.innerText = this.state.currentIndex+1;
+        this.updateSongNumCell(this.state.currentIndex);
         //setState to new song
         this.setSong(song, index) }
       //play new song
@@ -65,9 +86,7 @@ class Album extends Component {
 
   handlePrevClick() {
     const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
-    //reset last songNumCell to number
-    const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
-    lastSongNumCell.innerText = this.state.currentIndex+1;
+    this.updateSongNumCell(this.state.currentIndex);
     //play prev saong, reset current index
     const newIndex = Math.max(0, currentIndex-1);
     const newSong = this.state.album.songs[newIndex];
@@ -77,9 +96,7 @@ class Album extends Component {
 
   handleNextClick() {
     const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
-    //reset last songNumCell to number
-    const lastSongNumCell = document.getElementById('songNumCell ' + this.state.currentIndex);
-    lastSongNumCell.innerText = this.state.currentIndex+1;
+    this.updateSongNumCell(this.state.currentIndex);
     //play prev song, reset current index
     const newIndex = Math.min(this.state.album.songs.length-1, currentIndex+1);
     const newSong = this.state.album.songs[newIndex];
@@ -87,26 +104,25 @@ class Album extends Component {
     this.play(newIndex);
   }
 
+  handleTimeChange(e) {
+    const newTime = this.audioElement.duration * e.target.value;
+    this.audioElement.currentTime = newTime;
+    this.setState({ currentTime: newTime });
+  }
+
   handleMouseEnter(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (!isSameSong || !this.state.isPlaying) {
-      //change numCell to play icon
-      const songNumCell = document.getElementById('songNumCell ' + index);
-      const spanElem = document.createElement('span')
-      spanElem.className = "ion-play"
-      songNumCell.innerText = '';
-      songNumCell.prepend(spanElem)
+    this.updateSongNumCell(index, "play");
     }
   }
 
   handleMouseLeave(song, index) {
     const isSameSong = this.state.currentSong === song;
     if (!isSameSong || !this.state.wasPlaying) {
-      //change numCell to number
       //Won't change first song to play icon on open even though it is the "current song"
-      const songNumCell = document.getElementById('songNumCell ' + index);
-      songNumCell.innerText = index+1;
-      }
+      this.updateSongNumCell(index);
+    }
   }
 
   render() {
@@ -144,10 +160,13 @@ class Album extends Component {
           </table>
           <PlayerBar
             isPlaying={this.state.isPlaying}
-            currentSong= {this.state.currentSong}
+            currentSong={this.state.currentSong}
+            currentTime={this.audioElement.currentTime}
+            duration={this.audioElement.duration}
             handleSongClick={() => this.handleSongClick(this.state.currentSong, this.state.currentIndex)}
             handlePrevClick={() => this.handlePrevClick()}
             handleNextClick={() => this.handleNextClick()}
+            handleTimeChange={(e) => this.handleTimeChange(e)}
           />
         </section>
       </section>
