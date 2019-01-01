@@ -162,7 +162,7 @@ class Album extends Component {
       >
         <td id={'songNumCell ' + index}>{index+1}</td>
         <td>{song.title}</td>
-        <td>{song.duration}</td>
+        <td>{this.formatTime(song.duration)}</td>
       </tr>
     )
     return (
