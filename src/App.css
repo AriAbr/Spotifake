@@ -1,32 +1,404 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+/* landing Page */
+.landing-header h1 {
+  padding: 20px 0 0;
+  margin:auto;
+  font-size: 5em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.landing-header h2 {
+  padding: 0 0 20px;
+  margin: auto;
+  font-size: 1.5em;
+}
+
+.landing-header nav {
+  padding: 0px 0 40px 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.landing-header nav * {
+  background-color: #5F7BF0;
+  border: .8mm outset #5F7BF0;
+  padding: .5em 2em;
+  margin: 0 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: black;
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.landing-header nav *:hover {
+  border: .8mm inset #5F7BF0;
+}
+
+.selling-points{
+  display: flex;
+  justify-content: center;
+}
+
+.point {
+  background-color: lightblue;
+  border-radius: 12px;
+  width:27%;
+  display: inline-block;
+  padding: 1em;
+  margin: 1em;
+}
+
+@media screen and (max-width: 600px) {
+  /* UNDER 600px CSS here */
+  .landing-header h1 {
+    font-size: 4em;
   }
-  to {
-    transform: rotate(360deg);
+
+  .landing-header h2 {
+    font-size: 1.3em;
+  }
+  .selling-points{
+    display: block;
+  }
+  .point{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+  }
+}
+
+.point-title {
+  font-size: 30px;
+  height: 3em;
+}
+
+.point-description {
+  font-size: 1.5em;
+}
+
+/* inner menu */
+.inner-header {
+  padding: 10px;
+  margin: 10px 10%;
+}
+
+.inner-header h1 {
+  font-size: 2.4em;
+  float: left;
+  margin: 0;
+}
+
+.inner-header nav {
+  padding: 0 10px /* <-- right*/ 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 720px) {
+  /* UNDER 600px CSS here */
+  .inner-header {
+    padding: 10px;
+    margin: 10px 10%;
+  }
+  .inner-header h1 {
+    float: none;
+  }
+  .inner-header nav {
+    margin: 10px 0 0;
+    justify-content: center;
+  }
+}
+
+.inner-header nav * {
+  background-color: #5F7BF0;
+  border: .8mm outset #5F7BF0;
+  padding: .5em 2em;
+  margin: 0 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: black;
+  text-decoration: none;
+}
+
+.inner-header nav *:hover {
+  border: .8mm inset #5F7BF0;
+}
+
+/* library */
+
+#library-albums {
+  margin: 2%;
+}
+
+.library-album {
+  float: left;
+  padding: 2%;
+  margin: .5%;
+  width: 15%;
+  font-size: .8em;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+
+}
+
+.library-album:hover {
+  background-color: lightblue;
+}
+
+.library-album-cover {
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* album */
+#album-header {
+  width: 90%;
+  height: 100%;
+  float: left;
+  position: relative;
+  margin: 20px 5%;
+}
+
+#album-cover-art {
+  width: 15%;
+  height: 15%;
+  float: left;
+  border-radius: 12px;
+}
+
+.album-details {
+  text-align: left;
+  margin-left: 17%;
+  position: absolute;
+  bottom: 0;
+  width: 70%;
+}
+
+.album-details * {
+  margin: 0px;
+}
+
+.album-details #album-title{
+  font-size: 25px;
+}
+
+.album-details #artist{
+  font-size: 15px;
+  float: left;
+  margin-right: 10px;
+}
+
+.album-details #release-info{
+  font-size: 15px;
+}
+
+#song-list {
+  width: 90%;
+  margin: 10% 5% 3%;
+  border-collapse:collapse;
+}
+
+td {
+  padding: 5px;
+  margin: 0;
+}
+
+tr {
+  border-bottom: 2px solid lightblue;
+  border-radius: 12px;
+}
+
+tr:last-child {
+  border-bottom: 0;
+}
+
+tr:hover {
+  background-color: lightblue;
+}
+
+#song-number-column {
+  width: 15%;
+}
+
+#song-title-column {
+  width: 60%;
+}
+
+.song-title-cell{
+  text-align: left;
+  padding-left: 10px;
+}
+
+#song-duration-column {
+  width: 25%;
+}
+
+#playbar-buffer-space{
+  height: 146.6px;
+}
+
+/* player bar */
+
+#player-bar{
+  background-color: #86a9e0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+#time {
+  float:left;
+  width: 70%;
+  margin: 20px 5% 0 0;
+}
+
+.time-control{
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+#time .seek-bar {
+  display: inline-block;
+  width: 65%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: lightblue;
+  outline: none;
+}
+
+#time .seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #5F7BF0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#time .seek-bar::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #5F7BF0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.current-time {
+  display: inline-block;
+  width: 15%;
+}
+
+.total-time {
+  width: 15%;
+  display: inline-block;
+}
+
+#buttons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+#play-pause {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 0px solid #5F7BF0;
+  background-color: #D1E9EC;
+  font-size: 2em;
+  color: black;
+  display: inline-block;
+}
+
+#previous, #next {
+  background-color: #D1E9EC;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 0px;
+  font-size: 1.5em;
+  color: black;
+  display: inline-block;
+}
+
+#buttons *:hover {
+  background-color: lightblue;
+}
+
+/* volume control */
+
+#volume-control {
+  float:left;
+  width: 20%;
+  margin: 20px 0 0 0;
+  /* background-color: yellow; */
+  display: flex;
+  justify-content: center;
+}
+
+#volume-control .seek-bar {
+  display: inline-block;
+  width: 65%;
+  margin: 12.5px;
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  height: 5px;
+  background: lightblue;
+  outline: none;
+  display: inline-block;
+}
+
+#volume-control .seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #5F7BF0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#volume-control .seek-bar::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #5F7BF0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#low-volume-icon, #high-volume-icon {
+  display: inline-block;
+  width: 15%;
+  height: 30px;
+  font-size: 20px;
+}
+
+
+@media screen and (max-width: 720px) {
+  .inner-header {
+    padding: 10px;
+    margin: 10px 10%;
+  }
+
+  #time {
+    float: none;
+    width: 80%;
+    margin: 20px 10% 0;
+  }
+
+  #volume-control {
+    width: 60%;
+    margin: 0 20%;
   }
 }

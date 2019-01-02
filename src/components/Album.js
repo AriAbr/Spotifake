@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import albumData from './../data/albums';
 import PlayerBar from './PlayerBar';
+import { Link } from 'react-router-dom';
+
 
 class Album extends Component {
   constructor(props) {
@@ -161,18 +163,27 @@ class Album extends Component {
         onMouseLeave={() => this.handleMouseLeave(song, index)}
       >
         <td id={'songNumCell ' + index}>{index+1}</td>
-        <td>{song.title}</td>
+        <td className="song-title-cell">{song.title}</td>
         <td>{this.formatTime(song.duration)}</td>
       </tr>
     )
     return (
       <section className="album">
+        <header className="inner-header">
+          <h1>Bloc Jams</h1>
+          <nav>
+            <Link to='/'>Home</Link>
+            <Link to='/library'>Library</Link>
+          </nav>
+        </header>
         <section id="album-info">
-          <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title} />
-          <div className="album-details">
-            <h1 id="album-title">{this.state.album.title}</h1>
-            <h2 id="artist">{this.state.album.artist}</h2>
-            <div id="release-info">{this.state.album.releaseInfo}</div>
+          <div id="album-header">
+            <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title} />
+            <div className="album-details">
+              <h1 id="album-title">{this.state.album.title}</h1>
+              <h2 id="artist">{this.state.album.artist}</h2>
+              <div id="release-info">{this.state.album.releaseInfo}</div>
+            </div>
           </div>
           <table id="song-list">
             <colgroup>
@@ -198,6 +209,7 @@ class Album extends Component {
             handleVolumeChange={(e) => this.handleVolumeChange(e)}
           />
         </section>
+        <div id="playbar-buffer-space"/>
       </section>
     );
   }
