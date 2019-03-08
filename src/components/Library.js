@@ -12,7 +12,7 @@ class Library extends Component {
     return (
       <section className='library'>
         <header className="inner-header">
-          <h1>Bloc Jams</h1>
+          <h1>Spotifake</h1>
           <nav>
             <Link to='/'>Home</Link>
             <Link to='/library'>Library</Link>

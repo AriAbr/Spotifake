@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Landing = () => (
   <section className="landing">
     <header className="landing-header">
-      <h1>Bloc Jams</h1>
+      <h1>Spotifake</h1>
       <h2 className="hero-title">Turn the music up!</h2>
       <nav>
         <Link to='/'>Home</Link>
