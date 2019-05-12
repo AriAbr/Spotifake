@@ -80,10 +80,14 @@
 }
 
 /* inner menu */
-.inner-header {
-  padding: 10px;
-  margin: 10px 10%;
+@media screen and (min-width: 721px) {
+  .inner-header {
+    padding: 10px;
+    margin: 10px 3%;
+    width: 94%;
+  }
 }
+
 
 .inner-header h1 {
   font-size: 2.4em;
@@ -101,7 +105,7 @@
   /* UNDER 600px CSS here */
   .inner-header {
     padding: 10px;
-    margin: 10px 10%;
+    margin: 10px 5%;
   }
   .inner-header h1 {
     float: none;
