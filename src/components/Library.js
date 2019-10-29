@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import albumData from './../data/albums';
+import NavBar from './NavBar';
 
 class Library extends Component {
   constructor (props) {
@@ -11,13 +12,7 @@ class Library extends Component {
   render () {
     return (
       <section className='library'>
-        <header className="inner-header">
-          <h1>Spotifake</h1>
-          <nav>
-            <Link to='/'>Home</Link>
-            <Link to='/library'>Library</Link>
-          </nav>
-        </header>
+        <NavBar />
         <section id="library-albums">
           {
             this.state.albums.map ( (album, index) =>

@@ -8,7 +8,6 @@ const Landing = () => (
       <h1>Spotifake</h1>
       <h2 className="hero-title">Turn the music up!</h2>
       <nav>
-        <Link to='/'>Home</Link>
         <Link to='/library'>Library</Link>
       </nav>
     </header>

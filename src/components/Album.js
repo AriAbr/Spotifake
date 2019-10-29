@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import albumData from './../data/albums';
 import PlayerBar from './PlayerBar';
 import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
 
 class Album extends Component {
@@ -169,13 +170,7 @@ class Album extends Component {
     )
     return (
       <section className="album">
-        <header className="inner-header">
-          <h1>Spotifake</h1>
-          <nav>
-            <Link to='/'>Home</Link>
-            <Link to='/library'>Library</Link>
-          </nav>
-        </header>
+        <NavBar />
         <section id="album-info">
           <div id="album-header">
             <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title} />
